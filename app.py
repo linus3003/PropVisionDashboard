@@ -51,7 +51,7 @@ navbar = dbc.NavbarSimple(
 )
 
 #interactive ma
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="sqft", hover_name="url", size = df['scale'], size_max=15,
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='sqft', hover_name="url", size = df['scale'], size_max=15,
                         color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
                         opacity=1)
 # px.colors.diverging.Portland , px.colors.cyclical.IceFire
@@ -195,12 +195,13 @@ def update_figure(selected_year):
                                                f + "2022"])]
     elif (selected_year == 2021):
         filtered_df = df[df.dev_status.isin([f + "2020", "Fertiggestellt", f + "2021"])]
+
     elif (selected_year == 2020):
         filtered_df = df[df.dev_status.isin([f + "2020", "Fertiggestellt"])]
 
     else: filtered_df=df
 
-    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color="sqft", hover_name="url", size=filtered_df['scale'],
+    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='sqft', hover_name="url", size=filtered_df['scale'],
                             size_max=15,
                             color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
                             opacity=1)
