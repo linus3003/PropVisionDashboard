@@ -79,7 +79,7 @@ YEARS = [2020, 2021, 2022, 2023, 2024, 2025]
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])  # , external_stylesheets=external_stylesheets)
-
+server = app.server
 
 # App
 app.layout = html.Div(children=[
