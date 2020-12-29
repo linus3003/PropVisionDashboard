@@ -1,0 +1,38 @@
+/* expand navbar*/
+.container {
+	max-width: 2000px;
+}
+/* primary background color (dark blue) */
+.bg-primary {
+	background-color: #1d3552 !important;
+}
+/* style of logout button */
+.btn {
+	background-color: #ef9b15;
+	border-color: #ef9b15;
+	color: #2c3e50;
+	font-weight: bold;
+}
+
+/* filter (dropdown) container */
+.db-filter-dropdown {
+  width: 300px;
+  margin-right: 25px;
+  margin-left: 25px;
+}
+.db-filter-dropdown  > div{
+  width: 300px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.margin-xl {
+  margin-left: 400px;
+}
+
+/* margin of map and histogram container*/
+#map-container {
+	margin: 0 25px 0 25px;
+}
+
+
+
