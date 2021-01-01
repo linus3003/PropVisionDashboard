@@ -95,9 +95,9 @@ app.layout = html.Div(children=[
         dcc.Dropdown(
             id='filter-dropdown',
             options=[
-                {'label': 'Category', 'value': 'NYC'},
-                {'label': 'Price', 'value': 'MTL'},
-                {'label': 'Units', 'value': 'SF'}
+                {'label': 'Price', 'value': 'NYC'},
+                {'label': 'Number of Rooms', 'value': 'MTL'},
+                {'label': 'Square Footage', 'value': 'SF'}
             ],
             # style={'float': 'left','marginBottom': 10, 'width': '45%', 'marginLeft': 25 },
             style={'display': 'inline-block', 'width': '37.5%', 'marginLeft': 25},

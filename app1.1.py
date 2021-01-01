@@ -7,8 +7,16 @@ import pandas as pd
 from numpy import random
 from dash.dependencies import Input, Output
 import feedparser
+from dash.exceptions import PreventUpdate
+import plotly.graph_objects as go
+import webbrowser
 
 import datetime
+
+
+
+
+
 
 
 
@@ -42,6 +50,11 @@ df['Eur/m²']=round(df['price']/df['sqft'])
 
 #remove invalid points with wrong Eur/m²
 df=df.loc[(df['Eur/m²'] >=2500) & (df['Eur/m²'] <=25000)]
+
+
+
+#datatable
+
 
 
 # add navbar
@@ -87,7 +100,7 @@ footer = dbc.NavbarSimple(
         dbc.NavItem(dbc.NavLink("Imprint", href="#")),
         dbc.NavItem(dbc.NavLink("About", href="#")),
     ],
-    style={'margin':'50px 0px 0px 0px', 'width': '100%'},
+    style={'margin':'50px 0px 0px 0px', 'width': '100%', "float":"bottom"},
     brand_href="#",
     color="primary",
     dark=True
@@ -96,18 +109,27 @@ footer = dbc.NavbarSimple(
 
 
 #interactive map
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="Eur/m²", hover_name="url", size = df['scale'], size_max=15,hover_data={
-                                        "latitude": False, "longitude":False, "scale": False,
-                                        "price":True, "sqft": True, "Eur/m²": True,"dev_status": True,
-                                        }, 
-                        color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron', 
-                        opacity=1)
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="url",
+                        size=df['scale'],
+                        size_max=16, hover_data={
+                            "latitude": False, "longitude": False, "scale": False,
+                            "price": True, "sqft": True, "Eur/m²": True, "dev_status": True,
+                        },
+                        color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
+                        opacity=1, custom_data=["url"])
+
+
 # px.colors.diverging.Portland , px.colors.cyclical.IceFire
 fig.update_layout(
     clickmode='event+select',
     margin=dict(l=0, r=0, t=0, b=0),
 
 )
+
+
+
+
+
 # histogram
 hist = px.histogram(df, x="Eur/m²",
                     title='Histogram of prices',
@@ -143,13 +165,11 @@ def update_news():
     return html.Div(
         children=[
             html.Div(
-                className="p-news", 
-                children=html.H4("Headlines"),
+                className="p-news",
                 style={'margin-left': 25}
 
             ),
 
-    
             html.Table(
                 className="table-news",
                 children=[
@@ -164,14 +184,14 @@ def update_news():
                                             href=ndf.iloc[i]["link"],
                                             target="_blank",
                                     )
-                                ], style={'border':'solid','border-width': 0.1 , 'font-size': '85%', }
+                                ], style={'border':'groove','border-width': 0.1 , 'font-size': '85%', 'background-color':'rgba(1, 91, 150, 0.05)'}
                             )
                         ]
                     )
                     for i in range(min(len(ndf), max_rows))
                 ], 
-                style={'border':'solid','border-width': 0.1,'background-color':'rgba(1, 91, 150, 0.01)','color':'rgba(5, 10, 54,0.7)', 'opacity': 0.8, 'width':300, 'margin-left': 25} ,
-                  
+                style={'border':'hidden','background-color':'rgba(1, 91, 150, 0.05)', 'opacity': 0.8, 'width':300, 'margin-left': 25, 'margin-top':25 } ,
+                #'border':'solid', 'border-width': 0.1, 'color':'rgba(5, 10, 54,0.7)',
             ),
 
             # html.P(
@@ -181,7 +201,7 @@ def update_news():
 
 
 
-        ], style={'border':'solid','border-width': 0.1,'background-color':'rgba(1, 91, 150, 0.1)', 'width':'350 '}
+        ], style={'border':'hidden','border-width': 0.1,'background-color':'rgba(1, 91, 150, 0.05)', 'width':'350 '}
 
     ),
 
@@ -315,8 +335,6 @@ app.layout = html.Div([
 
 
 
-        
-
     # Map + right-side-panel + newsfeed
     html.Div(
         children=[
@@ -350,7 +368,9 @@ app.layout = html.Div([
                             ], className='col-11 justify-content-center',
                         ),
 
-                        dcc.Graph(id='map',figure=fig),
+
+                        dcc.Graph(id="map", figure=fig),
+
 
                     ],style={'padding-bottom': 15, 'width': '100%'}, className = 'col-8',
                 ),
@@ -361,7 +381,15 @@ app.layout = html.Div([
 
                         dcc.Tab(
                             label='Details', 
-                            children=[html.Div(id="textcontainer", style={'fontSize': '12px'})],
+                            children=[html.Div(id="textcontainer",
+                                               children= [html.A(
+                                                        children="Link to Source",
+                                                        id="link",
+                                                        href="https://dash.plot.ly",
+                                                        target="_blank",
+                                                        )],
+                                               style={'fontSize': '18px', 'margin-top': 25, })],
+
                             style=tab_style,
                             className='col-2',
                                 
@@ -398,20 +426,32 @@ app.layout = html.Div([
 
         ),
 
-       
-
 
 ])
+
+@app.callback(
+    Output('link', 'href'),
+    [Input('map', 'hoverData')])
+
+def display_hover_data(hoverData):
+    if hoverData:
+        #print(hoverData['points'][0])
+        target = hoverData['points'][0]['hovertext']
+        return target
+    else:
+        raise PreventUpdate
 
 
 
 #callback filter to map
 @app.callback(
-    Output('map', 'figure'),
+    Output('map','figure'),
     [Input('years-slider', 'value'),
     Input('price-range', 'value'),
     Input('psqm-range', 'value'),
     Input('size-range', 'value')])
+
+
 
 # def update_figure(values, dropdownvalue):
 def update_figure(selected_year, price,rel_price, size):
@@ -501,36 +541,13 @@ def update_figure(selected_year, price,rel_price, size):
         uirevision='constant',
         margin=dict(l=0, r=0, t=0, b=0))
 
-    
+    #fig.update_traces(customdata=filtered_df['url'])
 
     return fig
 
 
  
 
-    
-    
-
-@app.callback(
-    Output('textcontainer','children'),
-    [Input('map','clickData')])
-
-
-
-
-def display_click_data(clickData):
-    
-    if clickData is None:
-        return html.P("please click point on the map.")
-
-    else:
-        return html.P("yo have selected following point")
-
-
-
-    #the_link= clickData['points'][0]['customdata']['url'].slice()
-    # listing_address = clickData['points'][0]['customdata']['location']
-    #     absolute_price = clickData['points'][0]['df']['price']
 
 
 
