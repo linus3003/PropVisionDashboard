@@ -459,7 +459,7 @@ def display_hover_data(hoverData):
 
 
 # def update_figure(values, dropdownvalue):
-def update_figure(selected_year, price,rel_price, size):
+def update_figure(selected_year, price,rel_price, size, diff):
     filtered_df=df[:]
 
     #sleceted years
