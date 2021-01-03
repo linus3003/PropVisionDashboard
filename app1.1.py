@@ -189,13 +189,13 @@ def update_news():
                                             href=ndf.iloc[i]["link"],
                                             target="_blank",
                                     )
-                                ], style={'border':'groove','border-width': 0.1 , 'font-size': '85%', 'background-color':'rgba(1, 91, 150, 0.05)'}
+                                ], style={'border':'groove','border-width': 0.1 , 'font-size': '85%', 'background-color':'transparent'}
                             )
                         ]
                     )
                     for i in range(min(len(ndf), max_rows))
                 ], 
-                style={'border':'hidden','background-color':'rgba(1, 91, 150, 0.05)', 'opacity': 0.8, 'width':300, 'margin-left': 25, 'margin-top':25 } ,
+                style={'border':'hidden','background-color':'transparent', 'opacity': 0.8, 'width':300, 'margin-left': 25, 'margin-top':25 } ,
                 #'border':'solid', 'border-width': 0.1, 'color':'rgba(5, 10, 54,0.7)',
             ),
 
@@ -416,7 +416,7 @@ app.layout = html.Div([
                     style=tabs_styles, 
                 ),
 
-            ],className='row justify-content-center',   style={'width': '100%'}
+            ],className='row justify-content-center',   style={'width': '100%', 'margin-left': 10}
 
         ),
         
