@@ -56,7 +56,6 @@ df=df.loc[(df['Eur/m²'] >=2500) & (df['Eur/m²'] <=25000)]
 #datatable
 
 
-
 # add navbar
 navbar = dbc.NavbarSimple(
     children=[
@@ -164,6 +163,12 @@ def update_news():
     max_rows = 10 
     return html.Div(
         children=[
+            
+            html.P(
+                className="p-news float-right text-muted",
+                children=[html.P("Last update : " + datetime.datetime.now().strftime("%H:%M:%S"))],
+             ),   
+
             html.Div(
                 className="p-news",
                 style={'margin-left': 25}
@@ -194,10 +199,6 @@ def update_news():
                 #'border':'solid', 'border-width': 0.1, 'color':'rgba(5, 10, 54,0.7)',
             ),
 
-            # html.P(
-            #     className="p-news float-right text-muted",
-            #     children=[html.P("Last update : " + datetime.datetime.now().strftime("%H:%M:%S"))],
-            # ),   
 
 
 
@@ -314,8 +315,10 @@ app.layout = html.Div([
                                 id='predict-range',
                                 options= [
                                     {'label': 'All', 'value': 'All'},
-                                    {'label': 'over valued', 'value': 'over'},
-                                    {'label': 'under valued', 'value': 'under'}
+                                    {'label': 'Undervalued', 'value': 'under'},
+                                    {'label': 'Acceptable value', 'value': 'not_significant'},
+                                    {'label': 'Overvalued', 'value': 'over'}
+                                    
                                 ],
                                 multi=False,
                                 value='All'
@@ -366,6 +369,7 @@ app.layout = html.Div([
                                 ),
 
                             ], className='col-11 justify-content-center',
+                            style={'margin-left': -10}
                         ),
 
 
@@ -449,7 +453,8 @@ def display_hover_data(hoverData):
     [Input('years-slider', 'value'),
     Input('price-range', 'value'),
     Input('psqm-range', 'value'),
-    Input('size-range', 'value')])
+    Input('size-range', 'value'),
+    Input('predict-range','value')])
 
 
 
@@ -476,9 +481,6 @@ def update_figure(selected_year, price,rel_price, size):
 
     else: filtered_df=filtered_df
     
-    #else empty data frame with same columns?
-    #else:filtered_df=pd.DataFrame(columns = col for x in df )
-
 
         #filter prices
     if (price=='250k'):
@@ -523,6 +525,18 @@ def update_figure(selected_year, price,rel_price, size):
 
 
     else:filtered_df=filtered_df
+        
+    #price prediction filter
+    if (diff =='not_significant'):
+        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] >= -0.2) & (filtered_df['diff_from_prediction'] <= 0.2)]
+
+    if (diff =='over'):
+        filtered_df = filtered_df[filtered_df['diff_from_prediction'] > 0.2]
+
+    if (diff =='under'):
+        filtered_df = filtered_df[filtered_df['diff_from_prediction'] < -0.2]
+
+    else: filtered_df=filtered_df
 
 
 
@@ -540,8 +554,7 @@ def update_figure(selected_year, price,rel_price, size):
         clickmode= 'event+select',
         uirevision='constant',
         margin=dict(l=0, r=0, t=0, b=0))
-
-    #fig.update_traces(customdata=filtered_df['url'])
+    
 
     return fig
 
