@@ -133,7 +133,7 @@ fig.update_layout(
 hist = px.histogram(df, x="Eur/m²",
                     title='Histogram of prices',
                     labels={'total_bill': 'total bill'},  # can specify one label per df column
-                    opacity=0.8, width=350, height=490,
+                    opacity=0.8, width=345, height=500,
                     # represent bars with log scale
                     color_discrete_sequence=['indianred']  # color of histogram bars
                     )
