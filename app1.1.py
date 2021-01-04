@@ -256,7 +256,7 @@ app.layout = html.Div([
 
                     html.Div(
                         [
-                            html.P('Price range in EUR:'),
+                            html.P('Price range in Eur'),
                             dcc.Dropdown(
                                 id='price-range',
                                 options=[
