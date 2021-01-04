@@ -535,9 +535,9 @@ def reset_input(n_click):
     Output('link', 'href'),
     [Input('map', 'clickData')])
 def display_click_data(clickData):
-    print(clickData)
+
     if clickData:
-        print(clickData['points'][0])
+
         target = clickData['points'][0]['hovertext']
         return target, target
     else:
