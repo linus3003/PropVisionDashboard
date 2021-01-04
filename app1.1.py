@@ -46,7 +46,7 @@ df = df.loc[(df['Eur/m²'] >= 2500) & (df['Eur/m²'] <= 25000)]
 # lists for prediction
 
 
-wohntypen = df['wohntyp'].unique()
+wohntypen = df['Wohntyp'].unique()
 wohntypendf = pd.DataFrame(wohntypen, columns=['c'])
 wohntypendf = wohntypendf.dropna().sort_values('c')
 
@@ -656,7 +656,7 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
     # filter building category
 
     if cat != 'All':
-        filtered_df = filtered_df[filtered_df['wohntyp'] == cat]
+        filtered_df = filtered_df[filtered_df['Wohntyp'] == cat]
     else:
         filtered_df = filtered_df
 
