@@ -49,7 +49,7 @@ df = df.loc[(df['Eur/m²'] >= 2500) & (df['Eur/m²'] <= 25000)]
 # lists for prediction
 
 
-wohntypen = df['wohntyp'].unique()
+wohntypen = df['Wohntyp'].unique()
 wohntypendf = pd.DataFrame(wohntypen, columns=['c'])
 wohntypendf = wohntypendf.dropna().sort_values('c')
 
@@ -115,11 +115,11 @@ footer = dbc.NavbarSimple(
 )
 
 # interactive map
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="name", #"url"
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name", #"url"
                         size=df['scale'],
-                        size_max=16, hover_data={"url": False,
+                        size_max=16, hover_data={"url": False, "Wohntyp": True,
         "latitude": False, "longitude": False, "scale": False,
-        "price": True, "price-pred": True, "sqft": True, "Eur/m²": True, "dev_status": True,
+        "price": False, "Price": True,  "price-pred": False, "Predicted price": True, "sqft": False, "Living space":True, "Eur/m²": True, "Status":True
     },
     color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
     opacity=1, custom_data=["url"])
@@ -524,7 +524,7 @@ def update_output(n_clicks, sqft, rooms, devs, wohntyp, region):
 
             y = model.predict(test_data)
 
-            out = "{:,.2f}€".format(y[0])
+            out = "€{:,.2f}".format(y[0])
             return out
 
         except ValueError:
@@ -660,12 +660,14 @@ def update_figure(selected_year, price, rel_price, size, cat):
                                       'price-pred':0, 'sqft':0, 'dev_status':"null"}, ignore_index=True)
 
 
-    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="name", #url
+    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name", #url
                             size=filtered_df['scale'],
-                            size_max=16, hover_data={ "url":False,
-            "latitude": False, "longitude": False, "scale": False,
-            "price": True, "price-pred": True, "sqft": True, "Eur/m²": True, "dev_status": True,
-        },
+                            size_max=16, hover_data={"url": False, "Wohntyp": True,
+                                                    "latitude": False, "longitude": False, "scale": False,
+                                                    "price": False, "Price": True,  "price-pred": False,
+                                                    "Predicted price": True, "sqft": False, "Living space":True,
+                                                    "Eur/m²": True, "Status":True
+                                                     },
                             color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
                             opacity=1)
 
