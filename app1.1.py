@@ -318,7 +318,7 @@ app.layout = html.Div([
 
                     html.Div(
                         [
-                            html.P('Deviation (listed|predicted)'),
+                            html.P('Deviation from pred. price'),
                             dcc.Dropdown(
                                 id='predict-range',
                                 options=[
