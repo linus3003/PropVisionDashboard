@@ -20,6 +20,8 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])  # , externa
 
 server = app.server
 
+model = joblib.load("resources/model2.joblib")
+
 df = pd.read_csv('resources/alldata.csv', index_col=0)
 df = df[df['price'].notna()]
 df = df[df['sqft'].notna()]
@@ -637,5 +639,5 @@ def update_figure(selected_year, price, rel_price, size, cat):
 
 
 if __name__ == '__main__':
-    model = joblib.load("resources/model2.joblib")
+    #model = joblib.load("resources/model2.joblib")
     app.run_server(debug=True)
