@@ -20,7 +20,7 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])  # , externa
 
 server = app.server
 
-df = pd.read_csv('resources/alldata.csv', index_col=0)
+df = pd.read_csv('resources/dashdata.csv', index_col=0)
 df = df[df['price'].notna()]
 df = df[df['sqft'].notna()]
 

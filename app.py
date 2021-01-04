@@ -13,6 +13,7 @@ import datetime
 import joblib
 
 
+
 external_stylesheets = [
     dbc.themes.FLATLY]  # ,'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css', 'https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -22,7 +23,7 @@ server = app.server
 
 model = joblib.load("resources/model2.joblib")
 
-df = pd.read_csv('resources/alldata.csv', index_col=0)
+df = pd.read_csv('resources/dashdata.csv', index_col=0)
 df = df[df['price'].notna()]
 df = df[df['sqft'].notna()]
 
@@ -114,18 +115,19 @@ footer = dbc.NavbarSimple(
 )
 
 # interactive map
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="url",
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="name", #"url"
                         size=df['scale'],
-                        size_max=16, hover_data={
+                        size_max=16, hover_data={"url": False,
         "latitude": False, "longitude": False, "scale": False,
         "price": True, "price-pred": True, "sqft": True, "Eur/m²": True, "dev_status": True,
     },
-                        color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
-                        opacity=1, custom_data=["url"])
+    color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
+    opacity=1, custom_data=["url"])
 
 fig.update_layout(
     clickmode='event+select',
     margin=dict(l=0, r=0, t=0, b=0),
+
 
 )
 
@@ -463,7 +465,37 @@ app.layout = html.Div([
 
 ])
 
+'''
+@app.callback(
+    Output('histogram', 'figure'),
+    Input('map', 'selectedData'))
 
+def hist_selected_data(selectedData):
+    #print(selectedData)
+    if selectedData:
+        test = [selectedData['points'][p]['lat'] for p in range(len(selectedData['points']))]
+        filter_df = df[np.any([df['latitude'] in test])]
+        print(test)
+    else: filter_df = df
+
+    #df[df['latitude' in selectedData['points'][:]['lat']]]
+    hist = px.histogram(filter_df, x="Eur/m²",
+                        title='Histogram of price per m²',
+                        labels={'total_bill': 'total bill'},  # can specify one label per df column
+                        opacity=0.8, width=350, height=490,
+                        # represent bars with log scale
+                        color_discrete_sequence=['indianred']  # color of histogram bars
+                        )
+
+    hist.update_layout(
+        margin=dict(l=10, r=20, t=50, b=10),
+        paper_bgcolor='rgba(1, 91, 150, 0.05)',
+        plot_bgcolor='rgba(1, 91, 150, 0.05)'
+    )
+
+    return hist
+
+'''
 # prediction
 @app.callback(
     Output('container-button-basic', 'children'),
@@ -514,23 +546,23 @@ def update_output(n_clicks, sqft, rooms, devs, wohntyp, region):
 
 )
 def reset_input(n_click):
-    # if n_click >0:
-    return 0, "", "", "", "", ""
 
-
-# else: pass
+        return 0, "", "", "", "", ""
 
 
 @app.callback(
     Output('link', 'children'),
     Output('link', 'href'),
     [Input('map', 'clickData')])
+
 def display_click_data(clickData):
 
     if clickData:
 
-        target = clickData['points'][0]['hovertext']
-        return target, target
+        target = clickData['points'][0]['customdata'][0]
+        text = clickData['points'][0]['hovertext']
+
+        return text, target
     else:
         raise PreventUpdate
 
@@ -544,7 +576,8 @@ def display_click_data(clickData):
      Input('size-range', 'value'),
      Input('category-filter', 'value'),
      ])
-# def update_figure(values, dropdownvalue):
+
+
 def update_figure(selected_year, price, rel_price, size, cat):
     filtered_df = df[:]
 
@@ -623,9 +656,13 @@ def update_figure(selected_year, price, rel_price, size, cat):
     else:
         filtered_df = filtered_df
 
-    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="url",
+    filtered_df = filtered_df.append({'price': 0,'scale':0, 'longitude': 9.21, 'latitude' :51.13, 'url': "center of germany ;)",
+                                      'price-pred':0, 'sqft':0, 'dev_status':"null"}, ignore_index=True)
+
+
+    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="name", #url
                             size=filtered_df['scale'],
-                            size_max=16, hover_data={
+                            size_max=16, hover_data={ "url":False,
             "latitude": False, "longitude": False, "scale": False,
             "price": True, "price-pred": True, "sqft": True, "Eur/m²": True, "dev_status": True,
         },
