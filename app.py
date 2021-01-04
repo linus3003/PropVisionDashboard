@@ -28,6 +28,8 @@ df_diffq = (df["price"].max() - df["price"].min()) / 16
 df["scale"] = (df["price"] - df["price"].min()) / df_diffq + 1
 
 
+
+
 # add navbar
 navbar = dbc.NavbarSimple(
     children=[
