@@ -652,12 +652,12 @@ def update_figure(selected_year, price, rel_price, size, cat):
     # filter building category
 
     if cat != 'All':
-        filtered_df = filtered_df[filtered_df['wohntyp'] == cat]
+        filtered_df = filtered_df[filtered_df['Wohntyp'] == cat]
     else:
         filtered_df = filtered_df
 
-    filtered_df = filtered_df.append({'price': 0,'scale':0, 'longitude': 9.21, 'latitude' :51.13, 'url': "center of germany ;)",
-                                      'price-pred':0, 'sqft':0, 'dev_status':"null"}, ignore_index=True)
+    filtered_df = filtered_df.append({'Price': "",'scale':0, 'longitude': 9.21, 'latitude' :51.13, 'Name': "center of germany",
+                                      'Predicted price':"", 'Living space':"", 'Status':"", 'Wohntyp': ""}, ignore_index=True)
 
 
     fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name", #url
