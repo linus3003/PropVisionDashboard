@@ -22,7 +22,7 @@ python-dateutil==2.8.1
 pytz==2020.4
 retrying==1.3.3
 scikit-learn==0.22.2.post1
-scipy==1.6.0
+scipy
 sgmllib3k==1.0.0
 six==1.15.0
 threadpoolctl==2.1.0
