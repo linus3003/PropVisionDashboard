@@ -264,7 +264,9 @@ app.layout = html.Div([
                                     {'label': '0-250k', 'value': '250k'},
                                     {'label': '250k-500k', 'value': '500k'},
                                     {'label': '500k-1mio', 'value': '1mio'},
-                                    {'label': '>1mio', 'value': '>1mio'}
+                                    {'label': '1mio-1.5mio', 'value': '1.5mio'},
+                                    {'label': '1.5-2mio', 'value': '2mio'},
+                                    {'label': '>2mio', 'value': '>2mio'}
                                 ],
                                 value='All',
                                 multi=False,
@@ -316,13 +318,18 @@ app.layout = html.Div([
 
                     html.Div(
                         [
-                            html.P('Price Prediction filter'),
+                            html.P('Deviation (listed|predicted)'),
                             dcc.Dropdown(
                                 id='predict-range',
                                 options=[
                                     {'label': 'All', 'value': 'All'},
-                                    {'label': 'over valued', 'value': 'over'},
-                                    {'label': 'under valued', 'value': 'under'}
+                                    {'label': '(-)(20%) and less', 'value': '<(20)'},
+                                    {'label': '(-)(10%-20%)', 'value': '(20)'},
+                                    {'label': '(-)(0%-10%)', 'value': '(10)'},
+                                    {'label': '(+)0-10%', 'value': '10'},
+                                    {'label': '(+)10-20%', 'value': '20'},
+                                    {'label': '(+)20% and more', 'value': '>20'},
+                                                     
                                 ],
                                 multi=False,
                                 value='All'
@@ -540,10 +547,11 @@ def display_click_data(clickData):
      Input('price-range', 'value'),
      Input('psqm-range', 'value'),
      Input('size-range', 'value'),
+     Input('predict-range', 'value'),
      Input('category-filter', 'value'),
      ])
 # def update_figure(values, dropdownvalue):
-def update_figure(selected_year, price, rel_price, size, cat):
+def update_figure(selected_year, price, rel_price, size, diff, cat):
     filtered_df = df[:]
 
     # sleceted years
@@ -579,8 +587,14 @@ def update_figure(selected_year, price, rel_price, size, cat):
     if (price == '1mio'):
         filtered_df = filtered_df[(filtered_df['price'] > 500000) & (filtered_df['price'] <= 1000000)]
 
-    if (price == '>1mio'):
-        filtered_df = filtered_df[filtered_df['price'] > 1000000]
+    if (price == '1.5mio'):
+        filtered_df = filtered_df[(filtered_df['price'] > 1000000) & (filtered_df['price'] <= 1500000)]    
+
+    if (price == '2mio'):
+        filtered_df = filtered_df[(filtered_df['price'] > 1500000) & (filtered_df['price'] <= 2000000)]    
+
+    if (price == '>2mio'):
+        filtered_df = filtered_df[filtered_df['price'] > 2000000]
 
     else:
         filtered_df = filtered_df
@@ -613,7 +627,32 @@ def update_figure(selected_year, price, rel_price, size, cat):
 
     else:
         filtered_df = filtered_df
+        
+        
+    #filter price prediction
+    if (diff =='<(20)'):
+        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] < -0.2)]
 
+    if (diff =='(20)'):
+        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] < -0.1) & (filtered_df['diff_from_prediction'] >= -0.2)]
+
+    if (diff =='(10)'):
+        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] < 0) & (filtered_df['diff_from_prediction'] >= -0.1)]
+
+    if (diff =='10'):
+        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] > 0) & (filtered_df['diff_from_prediction'] <= 0.1)]
+    
+    if (diff =='20'):
+        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] > 0.1) & (filtered_df['diff_from_prediction'] <= 0.2)]
+
+    if (diff =='>20'):
+        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] > 0.2)]
+
+
+    else: filtered_df=filtered_df
+        
+        
+   
     # filter building category
 
     if cat != 'All':
