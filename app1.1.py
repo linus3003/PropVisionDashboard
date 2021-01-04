@@ -12,16 +12,6 @@ from numpy import random
 import datetime
 import joblib
 
-# import os
-# from sklearn import preprocessing
-# import re
-# import xgboost as xgb
-# from sklearn.model_selection import train_test_split, GridSearchCV
-# from sklearn.pipeline import Pipeline
-# from sklearn.impute import SimpleImputer
-# from sklearn.preprocessing import StandardScaler, OneHotEncoder
-# from sklearn.compose import ColumnTransformer
-
 
 external_stylesheets = [
     dbc.themes.FLATLY]  # ,'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css', 'https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -31,7 +21,6 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])  # , externa
 server = app.server
 
 df = pd.read_csv('resources/alldata.csv', index_col=0)
-df = df.rename(columns={"region": "city"})
 df = df[df['price'].notna()]
 df = df[df['sqft'].notna()]
 
@@ -61,7 +50,7 @@ wohntypen = df['wohntyp'].unique()
 wohntypendf = pd.DataFrame(wohntypen, columns=['c'])
 wohntypendf = wohntypendf.dropna().sort_values('c')
 
-regions = df['city'].unique()
+regions = df['region'].unique()
 regiondf = pd.DataFrame(regions, columns=['c'])
 regiondf = regiondf.dropna().sort_values('c')
 
@@ -69,7 +58,7 @@ dev_states = df['dev_status'].unique()
 dev_statesdf = pd.DataFrame(dev_states, columns=['c'])
 dev_statesdf = dev_statesdf.dropna().sort_values('c')
 
-# landkreis= np.array([str for str in regions.tolist() if str and "Landkreis" in str])
+
 
 
 # add navbar
