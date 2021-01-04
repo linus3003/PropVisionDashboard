@@ -130,8 +130,8 @@ fig.update_layout(
 )
 
 # histogram
-hist = px.histogram(df, x="price",
-                    title='Histogram of prices',
+hist = px.histogram(df, x="Eur/m²",
+                    title='Histogram of price per m²',
                     labels={'total_bill': 'total bill'},  # can specify one label per df column
                     opacity=0.8, width=350, height=490,
                     # represent bars with log scale
@@ -448,7 +448,7 @@ app.layout = html.Div([
         html.Div(id='container-button-basic',
                  children='Enter a value and press submit'),
     ],
-        style={'margin-left': 50, 'width': '25%', 'display': 'inline-block'}  # 'display':'flex' 'width':'9.2%'
+        style={'margin-left': 50, 'width': '20%', 'display': 'inline-block'}  # 'display':'flex' 'width':'9.2%'
 
     ),
 
@@ -639,5 +639,4 @@ def update_figure(selected_year, price, rel_price, size, cat):
 
 
 if __name__ == '__main__':
-    #model = joblib.load("resources/model2.joblib")
     app.run_server(debug=True)
