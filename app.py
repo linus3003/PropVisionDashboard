@@ -479,20 +479,20 @@ app.layout = html.Div([
     Input('map', 'selectedData'))
 
 def hist_selected_data(selectedData):
-    print(selectedData)
+
     if selectedData:
 
         filtList = []
         for i in range(len(selectedData['points'])):
             filtList.append(selectedData['points'][i]['hovertext'])
 
-        filter_df = df[df['Name'].isin(filtList)]
+        filter_df = df[df['Name'].isin(filtList)][['Name', 'Eur/m²']]
 
     else: filter_df = df
 
 
     hist = px.histogram(filter_df, x="Eur/m²",
-                        title='Histogram of price per m²',
+                        title='Distribution of price per m²',
                         labels={'total_bill': 'total bill'},  # can specify one label per df column
                         opacity=0.8, width=350, height=490,
                         # represent bars with log scale
