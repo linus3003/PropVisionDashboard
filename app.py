@@ -64,7 +64,6 @@ dev_statesdf = dev_statesdf.dropna().sort_values('c')
 
 
 
-
 # add navbar
 navbar = dbc.NavbarSimple(
     children=[
@@ -211,7 +210,7 @@ def update_news():
 # slider years
 YEARS = [2020, 2021, 2022, 2023, 2024, 2025]
 
-# styles: open-street-map, white-bg, carto-positron, carto-darkmatter, stamen-terrain, stamen-toner, stamen-watercolor
+
 tabs_styles = {
     'height': '44px',
     'width': '200%',
@@ -328,12 +327,12 @@ app.layout = html.Div([
                                 id='predict-range',
                                 options=[
                                     {'label': 'All', 'value': 'All'},
-                                    {'label': '(-)(20%) and less', 'value': '<(20)'},
-                                    {'label': '(-)(10%-20%)', 'value': '(20)'},
-                                    {'label': '(-)(0%-10%)', 'value': '(10)'},
-                                    {'label': '(+)0-10%', 'value': '10'},
-                                    {'label': '(+)10-20%', 'value': '20'},
-                                    {'label': '(+)20% and more', 'value': '>20'},
+                                    {'label': '-20% and less', 'value': '<(20)'},
+                                    {'label': '-10% to -20%', 'value': '(20)'},
+                                    {'label': '0% to -10%', 'value': '(10)'},
+                                    {'label': '0 to 10%', 'value': '10'},
+                                    {'label': '10% to 20%', 'value': '20'},
+                                    {'label': '20% and more', 'value': '>20'},
                                                      
                                 ],
                                 multi=False,
@@ -463,7 +462,7 @@ app.layout = html.Div([
                 html.Div(id='container-button-basic',
                          children='Enter a value and press submit'),
             ],
-            # 'display':'flex' 'width':'9.2%'
+
         ),
     ]),
 

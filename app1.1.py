@@ -128,8 +128,8 @@ fig.update_layout(
 )
 
 # histogram
-hist = px.histogram(df, x="price",
-                    title='Histogram of prices',
+hist = px.histogram(df, x="Eur/m²",
+                    title='Distribution of price/m²',
                     labels={'total_bill': 'total bill'},  # can specify one label per df column
                     opacity=0.8, width=350, height=490,
                     # represent bars with log scale
