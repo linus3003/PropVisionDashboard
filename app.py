@@ -164,10 +164,10 @@ def update_news():
 
     ndf = pd.DataFrame(posts, columns=['title', 'link'])
     max_rows = 10
-    return html.Div(
+    return html.Div(className="padding-top-10",
         children=[
             html.P(
-                className="p-news float-right text-muted",
+                className="p-news float-right text-muted margin-left",
                 children=[html.P("Last update : " + datetime.datetime.now().strftime("%H:%M:%S"))],
             ),
             html.Div(
@@ -393,7 +393,7 @@ app.layout = html.Div([
 
                     dcc.Tab(
                         label='Details',
-                        children=[html.Div(id="textcontainer",
+                        children=[html.Div(id="textcontainer", className="padding-top-10",
                                            children=[html.A(
                                                children="Click on a marker on the map to display its link",
                                                id="link",
@@ -428,39 +428,44 @@ app.layout = html.Div([
 
     ),
 
-    html.P(children="Use our machine learning model to predict the fair price for your building project:",
-           style={'margin-left': 50, 'margin-top': 25}),
-    html.Div(children=[
+    html.Div(id='container-price-prediction', children=[
+        html.P(className="header-2", children="Use our machine learning model to predict the fair price for your building project:"),
+            html.Div(children=[
+                html.Div(id="container-input", children=[
+                    html.Label(children="Space in m²"),
+                    dbc.Input(id="sqft", type="number", placeholder="enter living space in m²"),
+                    html.Label(children="Rooms"),
+                    dbc.Input(id="rooms", type="number", placeholder="number of rooms"),
+                ]),
+                html.Label(children="Status of development"),
+                dcc.Dropdown(id='dev_status-dd', className="prediction-dropdown dash-dropdown", options=[{'label': i, 'value': i} for i in dev_statesdf['c'].unique()],
+                             multi=False,
+                             value='',
+                             placeholder="Select development status",
+                             ),
 
-        dcc.Input(id="sqft", type="number", placeholder="enter living space in m²"),
-        dcc.Input(id="rooms", type="number", placeholder="number of rooms"),
+                html.Label(children="Living style"),
+                dcc.Dropdown(id='wohntyp-dd', className="prediction-dropdown dash-dropdown", options=[{'label': i, 'value': i} for i in wohntypendf['c'].unique()],
+                             multi=False,
+                             value='',
+                             placeholder="Select category",
+                             ),
+                html.Label(children="Region"),
+                dcc.Dropdown(id='region-dd', className="prediction-dropdown dash-dropdown", options=[{'label': i, 'value': i} for i in regiondf['c'].unique()],
+                             multi=False,
+                             value='',
+                             placeholder="Select region",
+                             ),
 
-        dcc.Dropdown(id='dev_status-dd', options=[{'label': i, 'value': i} for i in dev_statesdf['c'].unique()],
-                     multi=False,
-                     value='',
-                     placeholder="Select development status",
-                     ),
+                dbc.Button('Predict', id='submit-val', className="btn-blue", n_clicks=0),
+                dbc.Button('reset', id='reset', className="btn-grey", n_clicks=0),
 
-        dcc.Dropdown(id='wohntyp-dd', options=[{'label': i, 'value': i} for i in wohntypendf['c'].unique()],
-                     multi=False,
-                     value='',
-                     placeholder="Select category",
-                     ),
-        dcc.Dropdown(id='region-dd', options=[{'label': i, 'value': i} for i in regiondf['c'].unique()],
-                     multi=False,
-                     value='',
-                     placeholder="Select region",
-                     ),
-
-        html.Button('Predict', id='submit-val', n_clicks=0),
-        html.Button('reset', id='reset', n_clicks=0),
-
-        html.Div(id='container-button-basic',
-                 children='Enter a value and press submit'),
-    ],
-        style={'margin-left': 50, 'width': '20%', 'display': 'inline-block'}  # 'display':'flex' 'width':'9.2%'
-
-    ),
+                html.Div(id='container-button-basic',
+                         children='Enter a value and press submit'),
+            ],
+            # 'display':'flex' 'width':'9.2%'
+        ),
+    ]),
 
     html.Div(
 

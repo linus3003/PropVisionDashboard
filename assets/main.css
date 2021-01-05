@@ -1,3 +1,20 @@
+/* margin of 5px */
+.margin-left {
+    margin-left: 5px;
+}
+/* page */
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+}
+/* default color of links */
+a {
+    color: #1d3552;
+}
+
 /* expand navbar*/
 .container {
 	max-width: 2000px;
@@ -5,6 +22,7 @@
 /* primary background color (dark blue) */
 .bg-primary {
 	background-color: #1d3552 !important;
+	color: #ffffff !important;
 }
 /* style of logout button */
 .btn {
@@ -34,6 +52,18 @@
 	margin: 0;
 }
 
+/* map container */
+.justify-content-center {
+    justify-content: left !important;
+    margin-left: 40px;
+    min-height: 650px;
+}
+/* details container */
+.justify-content-center #undefined-parent {
+    justify-content: right !important;
+    margin-left: 2%;
+}
+
 
 /* detail panel*/
 #textcontainer{
@@ -41,11 +71,15 @@
   width: 350px;
   height: 490px;
   margin: 0px !important;
+  padding: 1%;
 }
-
-#textcontainer, html.A{
-  padding-top: 25px !important;
-  
+/* font size of link to website */
+#link {
+  font-size: 18px;
+}
+/* padding of 10px to the top */
+.padding-top-10 {
+  padding-top: 10px !important;
 }
 
 /* newsfeed */
@@ -55,17 +89,53 @@
   width: 350px;
 }
 
-
-
-/* page */
-html,body
-{
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    overflow-x: hidden; 
+/* color of table border in news table */
+.table-news tr td {
+    border-color: #d6d6d6 !important;
+    padding: 2% 0 1% 0;
 }
+.tab--selected.jsx-2137964197,
+.tab.jsx-2137964197:last-of-type .tab--selected {
+    border-top: 2px solid #ef9b15 !important;
+}
+
+/* price prediction container */
+#container-price-prediction {
+    width: 50%;
+    background-color: rgba(1, 91, 150, 0.05) !important;
+    margin: 0 50px 0 50px;
+    padding: 15px 0 15px 15px;
+}
+#container-input {
+margin-bottom: 5px;
+}
+.header-2 {
+    font-weight: bold;
+    font-size: 18px;
+}
+input{
+    width: 40% !important;
+    margin: 0 20px 10px 0 !important;
+    border-radius: 2px;
+}
+.prediction-dropdown {
+    width: 40%;
+    margin-bottom: 10px;
+}
+.btn-blue {
+    background-color: #1d3552;
+	border-color: #1d3552;
+	color: #ffffff;
+	margin: 5px 5px 0 0;
+}
+.btn-grey {
+    background-color: rgba(1, 91, 150, 0.05);
+	border-color: #1d3552;
+	margin: 5px 5px 0 20px;
+}
+
+
+
 
 
 
