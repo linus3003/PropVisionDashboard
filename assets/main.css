@@ -34,6 +34,29 @@
 	margin: 0 25px 0 25px;
 }
 
+/* detail panel*/
+#textcontainer{
+  background-color: rgba(1, 91, 150, 0.05);
+  width: 350px;
+  height: 490px;
+  margin: 0px !important;
+}
+
+#textcontainer, html.A{
+  padding-top: 25px !important;
+  
+}
+
+/* newsfeed */
+p{
+  margin-bottom: 5px !important;
+  font-size: 80% !important;
+  width: 350px;
+}
+
+
+
+/* page */
 html,body
 {
     width: 100%;
@@ -43,8 +66,4 @@ html,body
     overflow-x: hidden; 
 }
 
-.table-news{
-    background-color:
 
-
-}
