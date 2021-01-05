@@ -117,9 +117,9 @@ footer = dbc.NavbarSimple(
 # interactive map
 fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name", #"url"
                         size=df['scale'],
-                        size_max=16, hover_data={"url": False, "Wohntyp": True,
+                        size_max=16, hover_data={"url": False, "price": False, "Wohntyp": True,
         "latitude": False, "longitude": False, "scale": False,
-        "price": False, "Price": True,  "price-pred": False, "Predicted price": True, "sqft": False, "Living space":True, "Eur/m²": True, "Status":True
+        "Price": True,  "price-pred": False, "Predicted price": True, "sqft": False, "Living space":True, "Eur/m²": True, "Status":True
     },
     color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
     opacity=1, custom_data=["url"])
@@ -465,20 +465,24 @@ app.layout = html.Div([
 
 ])
 
-'''
+
 @app.callback(
     Output('histogram', 'figure'),
     Input('map', 'selectedData'))
 
 def hist_selected_data(selectedData):
-    #print(selectedData)
+    print(selectedData)
     if selectedData:
-        test = [selectedData['points'][p]['lat'] for p in range(len(selectedData['points']))]
-        filter_df = df[np.any([df['latitude'] in test])]
-        print(test)
+
+        filtList = []
+        for i in range(len(selectedData['points'])):
+            filtList.append(selectedData['points'][i]['hovertext'])
+
+        filter_df = df[df['Name'].isin(filtList)]
+
     else: filter_df = df
 
-    #df[df['latitude' in selectedData['points'][:]['lat']]]
+
     hist = px.histogram(filter_df, x="Eur/m²",
                         title='Histogram of price per m²',
                         labels={'total_bill': 'total bill'},  # can specify one label per df column
@@ -495,7 +499,7 @@ def hist_selected_data(selectedData):
 
     return hist
 
-'''
+
 # prediction
 @app.callback(
     Output('container-button-basic', 'children'),
@@ -662,9 +666,9 @@ def update_figure(selected_year, price, rel_price, size, cat):
 
     fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name", #url
                             size=filtered_df['scale'],
-                            size_max=16, hover_data={"url": False, "Wohntyp": True,
+                            size_max=16, hover_data={"url": False, "price": False, "Wohntyp": True,
                                                     "latitude": False, "longitude": False, "scale": False,
-                                                    "price": False, "Price": True,  "price-pred": False,
+                                                    "Price": True,  "price-pred": False,
                                                     "Predicted price": True, "sqft": False, "Living space":True,
                                                     "Eur/m²": True, "Status":True
                                                      },
