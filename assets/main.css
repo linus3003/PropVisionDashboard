@@ -18,39 +18,44 @@ a {
 /*** navbar ***/
 /* expand navbar*/
 .container {
-	max-width: 2000px;
+    max-width: 2000px;
 }
 /* primary background color (dark blue) */
 .bg-primary {
-	background-color: #1d3552 !important;
-	color: #ffffff !important;
+    background-color: #1d3552 !important;
+    color: #ffffff !important;
 }
 /* style of logout button */
 .btn {
-	background-color: #ef9b15;
-	border-color: #ef9b15;
-	color: #2c3e50;
-	font-weight: bold;
+    background-color: #ef9b15;
+    border-color: #ef9b15;
+    color: #2c3e50;
+    font-weight: bold;
 }
 /*** filter ***/
 /* dropdowns */
+.col-2 {
+    padding-right: 20px;
+    padding-left: 33px;
+}
+
 .db-filter-dropdown {
-  width: 300px;
-  margin-right: 25px;
-  margin-left: 25px;
+    width: 300px;
+    margin-right: 25px;
+    margin-left: 25px;
 }
 .db-filter-dropdown  > div{
-  width: 300px;
-  margin-left: 25px;
-  margin-right: 25px;
+    width: 300px;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 .margin-xl {
-  margin-left: 400px;
+    margin-left: 400px;
 }
 
 /* margin of slider years*/
 #map-container {
-	margin: 0;
+    margin: 0;
 }
 
 /*** map container ***/
@@ -66,26 +71,26 @@ a {
 }
 /* detail panel*/
 #textcontainer{
-  background-color: rgba(1, 91, 150, 0.05);
-  width: 350px;
-  height: 490px;
-  margin: 0px !important;
-  padding: 1%;
+    background-color: rgba(1, 91, 150, 0.05);
+    width: 350px;
+    height: 490px;
+    margin: 0px !important;
+    padding: 1%;
 }
 /* font size of link to website */
 #link {
-  font-size: 18px;
+    font-size: 18px;
 }
 /* padding of 10px to the top */
 .padding-top-10 {
-  padding-top: 10px !important;
+    padding-top: 10px !important;
 }
 
 /* newsfeed */
 .p-news p{
-  margin-bottom: -2px !important;
-  font-size: 80% !important;
-  width: 350px;
+    margin-bottom: -2px !important;
+    font-size: 80% !important;
+    width: 350px;
 }
 /* color of table border in news table */
 .table-news tr td {
@@ -111,7 +116,7 @@ a {
 }
 /* container with input forms */
 #container-input {
-margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 /* input forms */
 input{
@@ -127,12 +132,12 @@ input{
 /* buttons */
 .btn-blue {
     background-color: #1d3552;
-	border-color: #1d3552;
-	color: #ffffff;
-	margin: 5px 5px 0 0;
+    border-color: #1d3552;
+    color: #ffffff;
+    margin: 5px 5px 0 0;
 }
 .btn-grey {
     background-color: rgba(1, 91, 150, 0.05);
-	border-color: #1d3552;
-	margin: 5px 5px 0 20px;
+    border-color: #1d3552;
+    margin: 5px 5px 0 20px;
 }
