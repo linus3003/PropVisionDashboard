@@ -499,7 +499,6 @@ def hist_selected_data(selectedData):
 
     return hist
 
-
 # prediction
 @app.callback(
     Output('container-button-basic', 'children'),
