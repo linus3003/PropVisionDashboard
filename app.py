@@ -163,7 +163,7 @@ def update_news():
             posts.append((post.title, post.link))
 
     ndf = pd.DataFrame(posts, columns=['title', 'link'])
-    max_rows = 10
+    max_rows = 9
     return html.Div(className="padding-top-10",
         children=[
             html.P(
