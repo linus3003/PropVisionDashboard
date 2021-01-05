@@ -62,12 +62,14 @@ a {
 .justify-content-center {
     justify-content: left !important;
     margin-left: 40px;
-    min-height: 650px;
 }
 /*** panel container ***/
 .justify-content-center #undefined-parent {
     justify-content: right !important;
     margin-left: 2%;
+}
+.col-8 {
+    margin-left: 0;
 }
 /* detail panel*/
 #textcontainer{
@@ -108,7 +110,7 @@ a {
 #container-price-prediction {
     width: 50%;
     background-color: rgba(1, 91, 150, 0.05) !important;
-    margin: 0 50px 0 50px;
+    margin: 0 0 0 55px;
     padding: 15px 0 15px 15px;
 }
 /* title in this container */
@@ -142,4 +144,7 @@ input{
     background-color: rgba(1, 91, 150, 0.05);
     border-color: #1d3552;
     margin: 5px 5px 0 20px;
+}
+#container-button-basic {
+    padding-top: 10px;
 }
