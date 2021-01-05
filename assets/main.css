@@ -1,7 +1,3 @@
-/* margin of 5px */
-.margin-left {
-    margin-left: 5px;
-}
 /* page */
 html,body {
     width: 100%;
@@ -14,7 +10,12 @@ html,body {
 a {
     color: #1d3552;
 }
+/* margin of 5px */
+.margin-left {
+    margin-left: 5px;
+}
 
+/*** navbar ***/
 /* expand navbar*/
 .container {
 	max-width: 2000px;
@@ -31,8 +32,8 @@ a {
 	color: #2c3e50;
 	font-weight: bold;
 }
-
-/* filter (dropdown) container */
+/*** filter ***/
+/* dropdowns */
 .db-filter-dropdown {
   width: 300px;
   margin-right: 25px;
@@ -52,19 +53,17 @@ a {
 	margin: 0;
 }
 
-/* map container */
+/*** map container ***/
 .justify-content-center {
     justify-content: left !important;
     margin-left: 40px;
     min-height: 650px;
 }
-/* details container */
+/*** panel container ***/
 .justify-content-center #undefined-parent {
     justify-content: right !important;
     margin-left: 2%;
 }
-
-
 /* detail panel*/
 #textcontainer{
   background-color: rgba(1, 91, 150, 0.05);
@@ -88,7 +87,6 @@ a {
   font-size: 80% !important;
   width: 350px;
 }
-
 /* color of table border in news table */
 .table-news tr td {
     border-color: #d6d6d6 !important;
@@ -99,29 +97,34 @@ a {
     border-top: 2px solid #ef9b15 !important;
 }
 
-/* price prediction container */
+/*** price prediction container ***/
 #container-price-prediction {
     width: 50%;
     background-color: rgba(1, 91, 150, 0.05) !important;
     margin: 0 50px 0 50px;
     padding: 15px 0 15px 15px;
 }
-#container-input {
-margin-bottom: 5px;
-}
+/* title in this container */
 .header-2 {
     font-weight: bold;
     font-size: 18px;
 }
+/* container with input forms */
+#container-input {
+margin-bottom: 5px;
+}
+/* input forms */
 input{
     width: 40% !important;
     margin: 0 20px 10px 0 !important;
     border-radius: 2px;
 }
+/* drowdowns */
 .prediction-dropdown {
     width: 40%;
     margin-bottom: 10px;
 }
+/* buttons */
 .btn-blue {
     background-color: #1d3552;
 	border-color: #1d3552;
@@ -133,9 +136,3 @@ input{
 	border-color: #1d3552;
 	margin: 5px 5px 0 20px;
 }
-
-
-
-
-
-
