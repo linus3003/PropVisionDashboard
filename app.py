@@ -115,14 +115,14 @@ footer = dbc.NavbarSimple(
 )
 
 # interactive map
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name", #"url"
-                        size=df['scale'],
-                        size_max=16, hover_data={"url": False, "price": False, "Wohntyp": True,
-        "latitude": False, "longitude": False, "scale": False,
-        "Price": True,  "price-pred": False, "Predicted price": True, "sqft": False, "Living space":True, "Eur/m²": True, "Status":True
-    },
-    color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
-    opacity=1, custom_data=["url"])
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",
+                        size=df['scale'],size_max=13,
+                        hover_data={"url": False, "price": False, "Wohntyp": True,
+                        "latitude": False, "longitude": False, "scale": False,
+                        "Price": True,  "price-pred": False, "Predicted price": True, "sqft": False, "Living space":True, "Eur/m²": True, "Status":True
+                        },
+                        color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
+                         opacity=1, custom_data=["url"])
 
 fig.update_layout(
     clickmode='event+select',
@@ -328,8 +328,8 @@ app.layout = html.Div([
                                 options=[
                                     {'label': 'All', 'value': 'All'},
                                     {'label': '-20% and less', 'value': '<(20)'},
-                                    {'label': '-10% to -20%', 'value': '(20)'},
-                                    {'label': '0% to -10%', 'value': '(10)'},
+                                    {'label': '-20% to -10%', 'value': '(20)'},
+                                    {'label': '-10% to 0%', 'value': '(10)'},
                                     {'label': '0 to 10%', 'value': '10'},
                                     {'label': '10% to 20%', 'value': '20'},
                                     {'label': '20% and more', 'value': '>20'},
@@ -701,13 +701,13 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
     else:
         filtered_df = filtered_df
 
-    filtered_df = filtered_df.append({'Price': "",'scale':0, 'longitude': 9.21, 'latitude' :51.13, 'Name': "center of germany",
+    filtered_df = filtered_df.append({'Price': "",'scale':0, 'longitude': 9.21, 'latitude' :51.13, 'Name': "This is the center of germany",
                                       'Predicted price':"", 'Living space':"", 'Status':"", 'Wohntyp': ""}, ignore_index=True)
 
 
-    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name", #url
-                            size=filtered_df['scale'],
-                            size_max=16, hover_data={"url": False, "price": False, "Wohntyp": True,
+    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",
+                            size=filtered_df['scale'],size_max=13,
+                            hover_data={"url": False, "price": False, "Wohntyp": True,
                                                     "latitude": False, "longitude": False, "scale": False,
                                                     "Price": True,  "price-pred": False,
                                                     "Predicted price": True, "sqft": False, "Living space":True,
