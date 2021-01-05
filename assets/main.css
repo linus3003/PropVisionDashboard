@@ -79,7 +79,8 @@ a {
 }
 /* font size of link to website */
 #link {
-    font-size: 18px;
+    font-size: 14px;
+    color:rgb(0, 171, 250);
 }
 /* padding of 10px to the top */
 .padding-top-10 {
@@ -87,11 +88,12 @@ a {
 }
 
 /* newsfeed */
-.p-news p{
-    margin-bottom: -2px !important;
+.p-news p {
+    margin-bottom: -3px !important;
     font-size: 80% !important;
-    width: 350px;
+    width: 345px;
 }
+
 /* color of table border in news table */
 .table-news tr td {
     border-color: #d6d6d6 !important;
