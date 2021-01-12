@@ -110,24 +110,25 @@ footer = dbc.NavbarSimple(
 )
 
 # interactive map
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",  # "url"
-                        size=df['scale'],
-                        size_max=16, hover_data={"url": False, "price": False, "Wohntyp": True,
-                                                 "latitude": False, "longitude": False, "scale": False,
-                                                 "Price": True, "price-pred": False, "Predicted price": True,
-                                                 "sqft": False, "Living space": True, "Eur/m²": True, "Status": True
-                                                 },
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",
+                        size=df['scale'], size_max=13,
+                        hover_data={"url": False, "price": False, "Wohntyp": True,
+                                    "latitude": False, "longitude": False, "scale": False,
+                                    "Price": True, "price-pred": False, "Predicted price": True, "sqft": False,
+                                    "Living space": True, "Eur/m²": True, "Status": True
+                                    },
                         color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
                         opacity=1, custom_data=["url"])
 
 fig.update_layout(
     clickmode='event+select',
     margin=dict(l=0, r=0, t=0, b=0),
+
 )
 
 # histogram
 hist = px.histogram(df, x="Eur/m²",
-                    title='Distribution of price per m²',
+                    title='Histogram of price per m²',
                     labels={'total_bill': 'total bill'},  # can specify one label per df column
                     opacity=0.8, width=350, height=490,
                     # represent bars with log scale
@@ -156,7 +157,7 @@ def update_news():
             posts.append((post.title, post.link))
 
     ndf = pd.DataFrame(posts, columns=['title', 'link'])
-    max_rows = 10
+    max_rows = 9
     return html.Div(className="padding-top-10",
                     children=[
                         html.P(
@@ -206,7 +207,6 @@ def update_news():
 # slider years
 YEARS = [2020, 2021, 2022, 2023, 2024, 2025]
 
-# styles: open-street-map, white-bg, carto-positron, carto-darkmatter, stamen-terrain, stamen-toner, stamen-watercolor
 tabs_styles = {
     'height': '44px',
     'width': '200%',
@@ -323,12 +323,12 @@ app.layout = html.Div([
                                 id='predict-range',
                                 options=[
                                     {'label': 'All', 'value': 'All'},
-                                    {'label': '(-)(20%) and less', 'value': '<(20)'},
-                                    {'label': '(-)(10%-20%)', 'value': '(20)'},
-                                    {'label': '(-)(0%-10%)', 'value': '(10)'},
-                                    {'label': '(+)0-10%', 'value': '10'},
-                                    {'label': '(+)10-20%', 'value': '20'},
-                                    {'label': '(+)20% and more', 'value': '>20'},
+                                    {'label': '-20% and less', 'value': '<(20)'},
+                                    {'label': '-20% to -10%', 'value': '(20)'},
+                                    {'label': '-10% to 0%', 'value': '(10)'},
+                                    {'label': '0 to 10%', 'value': '10'},
+                                    {'label': '10% to 20%', 'value': '20'},
+                                    {'label': '20% and more', 'value': '>20'},
 
                                 ],
                                 multi=False,
@@ -403,15 +403,8 @@ app.layout = html.Div([
                     ),
 
                     dcc.Tab(
-                        label='Histogram',
+                        label='Histogramm',
                         children=[dcc.Graph(id="histogram", figure=hist)],
-                        style=tab_style,
-                        className='col-2 ',
-                    ),
-
-                    dcc.Tab(
-                        label='Pie Chart',
-                        children=[dcc.Graph(id="pie")],
                         style=tab_style,
                         className='col-2 ',
                     ),
@@ -423,10 +416,10 @@ app.layout = html.Div([
                         className='col-2'
                     ),
                 ],
-
+                style=tabs_styles,
             ),
 
-        ]
+        ], className='row justify-content-center', style={'width': '100%'}
 
     ),
 
@@ -469,7 +462,7 @@ app.layout = html.Div([
             html.Div(id='container-button-basic',
                      children='Enter a value and press submit'),
         ],
-            # 'display':'flex' 'width':'9.2%'
+
         ),
     ]),
 
@@ -704,17 +697,17 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
         filtered_df = filtered_df
 
     filtered_df = filtered_df.append(
-        {'Price': "", 'scale': 0, 'longitude': 9.21, 'latitude': 51.13, 'Name': "center of germany",
+        {'Price': "", 'scale': 0, 'longitude': 9.21, 'latitude': 51.13, 'Name': "This is the center of germany",
          'Predicted price': "", 'Living space': "", 'Status': "", 'Wohntyp': ""}, ignore_index=True)
 
-    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",  # url
-                            size=filtered_df['scale'],
-                            size_max=16, hover_data={"url": False, "price": False, "Wohntyp": True,
-                                                     "latitude": False, "longitude": False, "scale": False,
-                                                     "Price": True, "price-pred": False,
-                                                     "Predicted price": True, "sqft": False, "Living space": True,
-                                                     "Eur/m²": True, "Status": True
-                                                     },
+    fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",
+                            size=filtered_df['scale'], size_max=13,
+                            hover_data={"url": False, "price": False, "Wohntyp": True,
+                                        "latitude": False, "longitude": False, "scale": False,
+                                        "Price": True, "price-pred": False,
+                                        "Predicted price": True, "sqft": False, "Living space": True,
+                                        "Eur/m²": True, "Status": True
+                                        },
                             color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
                             opacity=1)
 

@@ -12,17 +12,14 @@ from numpy import random
 import datetime
 import joblib
 
-
-
-external_stylesheets = [
-    dbc.themes.FLATLY]  # ,'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css', 'https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = [dbc.themes.FLATLY]
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])  # , external_stylesheets=external_stylesheets)
 
 server = app.server
 
+#load ML model
 model = joblib.load("resources/model2.joblib")
-
 
 df = pd.read_csv('resources/dashdata.csv', index_col=0)
 df = df[df['price'].notna()]
@@ -47,9 +44,8 @@ df['Eur/m²'] = round(df['price'] / df['sqft'])
 # remove invalid points with wrong Eur/m²
 df = df.loc[(df['Eur/m²'] >= 2500) & (df['Eur/m²'] <= 25000)]
 
-# lists for prediction
 
-
+# lists for labels
 wohntypen = df['Wohntyp'].unique()
 wohntypendf = pd.DataFrame(wohntypen, columns=['c'])
 wohntypendf = wohntypendf.dropna().sort_values('c')
@@ -62,9 +58,7 @@ dev_states = df['dev_status'].unique()
 dev_statesdf = pd.DataFrame(dev_states, columns=['c'])
 dev_statesdf = dev_statesdf.dropna().sort_values('c')
 
-
-
-# add navbar
+# navbar
 navbar = dbc.NavbarSimple(
     children=[
         dbc.NavItem(dbc.NavLink("Dashboard", href="#")),
@@ -99,7 +93,7 @@ navbar = dbc.NavbarSimple(
     dark=True
 
 )
-# add footer
+# footer
 footer = dbc.NavbarSimple(
     className="footer",
     children=[
@@ -116,18 +110,18 @@ footer = dbc.NavbarSimple(
 
 # interactive map
 fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",
-                        size=df['scale'],size_max=13,
+                        size=df['scale'], size_max=13,
                         hover_data={"url": False, "price": False, "Wohntyp": True,
-                        "latitude": False, "longitude": False, "scale": False,
-                        "Price": True,  "price-pred": False, "Predicted price": True, "sqft": False, "Living space":True, "Eur/m²": True, "Status":True
-                        },
+                                    "latitude": False, "longitude": False, "scale": False,
+                                    "Price": True, "price-pred": False, "Predicted price": True, "sqft": False,
+                                    "Living space": True, "Eur/m²": True, "Status": True
+                                    },
                         color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
-                         opacity=1, custom_data=["url"])
+                        opacity=1, custom_data=["url"])
 
 fig.update_layout(
     clickmode='event+select',
     margin=dict(l=0, r=0, t=0, b=0),
-
 
 )
 
@@ -146,8 +140,8 @@ hist.update_layout(
     plot_bgcolor='rgba(1, 91, 150, 0.05)'
 )
 
-# Really Simple Syndication of newssite
-# possibility to add more sources
+# news sites, possibility to add more sources
+
 rawrss = [
     'https://www.haufe.de/xml/rss_129130.xml',
 ]
@@ -164,52 +158,53 @@ def update_news():
     ndf = pd.DataFrame(posts, columns=['title', 'link'])
     max_rows = 9
     return html.Div(className="padding-top-10",
-        children=[
-            html.P(
-                className="p-news float-right text-muted margin-left",
-                children=[html.P("Last update : " + datetime.datetime.now().strftime("%H:%M:%S"))],
-            ),
-            html.Div(
-                className="p-news",
-                style={'margin-left': 25}
+                    children=[
+                        html.P(
+                            className="p-news float-right text-muted margin-left",
+                            children=[html.P("Last update : " + datetime.datetime.now().strftime("%H:%M:%S"))],
+                        ),
+                        html.Div(
+                            className="p-news",
+                            style={'margin-left': 25}
 
-            ),
+                        ),
 
-            html.Table(
-                className="table-news",
-                children=[
-                    html.Tr(
-                        children=[
-                            html.Td(
-                                children=[
-                                    html.A(
+                        html.Table(
+                            className="table-news",
+                            children=[
+                                html.Tr(
+                                    children=[
+                                        html.Td(
+                                            children=[
+                                                html.A(
 
-                                        className="text-info td-link",
-                                        children=ndf.iloc[i]["title"],
-                                        href=ndf.iloc[i]["link"],
-                                        target="_blank",
-                                    )
-                                ], style={'border': 'groove', 'border-width': 0.1, 'font-size': '85%',
-                                          'background-color': 'transparent'}
-                            )
-                        ], style={'background-color': 'transparent'}
-                    )
-                    for i in range(min(len(ndf), max_rows))
-                ],
-                style={'border': 'hidden', 'background-color': 'transparent', 'width': 300, 'margin-left': 25,
-                       'margin-top': 25},
-                # 'border':'solid', 'border-width': 0.1, 'color':'rgba(5, 10, 54,0.7)',
-            ),
+                                                    className="text-info td-link",
+                                                    children=ndf.iloc[i]["title"],
+                                                    href=ndf.iloc[i]["link"],
+                                                    target="_blank",
+                                                )
+                                            ], style={'border': 'groove', 'border-width': 0.1, 'font-size': '85%',
+                                                      'background-color': 'transparent'}
+                                        )
+                                    ], style={'background-color': 'transparent'}
+                                )
+                                for i in range(min(len(ndf), max_rows))
+                            ],
+                            style={'border': 'hidden', 'background-color': 'transparent', 'width': 300,
+                                   'margin-left': 25,
+                                   'margin-top': 25},
+                            # 'border':'solid', 'border-width': 0.1, 'color':'rgba(5, 10, 54,0.7)',
+                        ),
 
-        ],
-        style={'border': 'hidden', 'border-width': 0.1, 'background-color': 'rgba(1, 91, 150, 0.05)', 'width': '350 '}
+                    ],
+                    style={'border': 'hidden', 'border-width': 0.1, 'background-color': 'rgba(1, 91, 150, 0.05)',
+                           'width': '350 '}
 
-    ),
+                    ),
 
 
 # slider years
 YEARS = [2020, 2021, 2022, 2023, 2024, 2025]
-
 
 tabs_styles = {
     'height': '44px',
@@ -234,8 +229,7 @@ app.layout = html.Div([
         ], className='row'
     ),
 
-    # content
-    # 10 columns div for slider
+
     html.Div(
 
         children=[
@@ -333,7 +327,7 @@ app.layout = html.Div([
                                     {'label': '0 to 10%', 'value': '10'},
                                     {'label': '10% to 20%', 'value': '20'},
                                     {'label': '20% and more', 'value': '>20'},
-                                                     
+
                                 ],
                                 multi=False,
                                 value='All'
@@ -428,40 +422,44 @@ app.layout = html.Div([
     ),
 
     html.Div(id='container-price-prediction', children=[
-        html.P(className="header-2", children="Use our machine learning model to predict the fair price for your building project:"),
-            html.Div(children=[
-                html.Div(id="container-input", children=[
-                    html.Label(children="Space in m²"),
-                    dbc.Input(id="sqft", type="number", placeholder="enter living space in m²"),
-                    html.Label(children="Rooms"),
-                    dbc.Input(id="rooms", type="number", placeholder="number of rooms"),
-                ]),
-                html.Label(children="Status of development"),
-                dcc.Dropdown(id='dev_status-dd', className="prediction-dropdown dash-dropdown", options=[{'label': i, 'value': i} for i in dev_statesdf['c'].unique()],
-                             multi=False,
-                             value='',
-                             placeholder="Select development status",
-                             ),
+        html.P(className="header-2",
+               children="Use our machine learning model to predict the fair price for your building project:"),
+        html.Div(children=[
+            html.Div(id="container-input", children=[
+                html.Label(children="Space in m²"),
+                dbc.Input(id="sqft", type="number", placeholder="enter living space in m²"),
+                html.Label(children="Rooms"),
+                dbc.Input(id="rooms", type="number", placeholder="number of rooms"),
+            ]),
+            html.Label(children="Status of development"),
+            dcc.Dropdown(id='dev_status-dd', className="prediction-dropdown dash-dropdown",
+                         options=[{'label': i, 'value': i} for i in dev_statesdf['c'].unique()],
+                         multi=False,
+                         value='',
+                         placeholder="Select development status",
+                         ),
 
-                html.Label(children="Living style"),
-                dcc.Dropdown(id='wohntyp-dd', className="prediction-dropdown dash-dropdown", options=[{'label': i, 'value': i} for i in wohntypendf['c'].unique()],
-                             multi=False,
-                             value='',
-                             placeholder="Select category",
-                             ),
-                html.Label(children="Region"),
-                dcc.Dropdown(id='region-dd', className="prediction-dropdown dash-dropdown", options=[{'label': i, 'value': i} for i in regiondf['c'].unique()],
-                             multi=False,
-                             value='',
-                             placeholder="Select region",
-                             ),
+            html.Label(children="Living style"),
+            dcc.Dropdown(id='wohntyp-dd', className="prediction-dropdown dash-dropdown",
+                         options=[{'label': i, 'value': i} for i in wohntypendf['c'].unique()],
+                         multi=False,
+                         value='',
+                         placeholder="Select category",
+                         ),
+            html.Label(children="Region"),
+            dcc.Dropdown(id='region-dd', className="prediction-dropdown dash-dropdown",
+                         options=[{'label': i, 'value': i} for i in regiondf['c'].unique()],
+                         multi=False,
+                         value='',
+                         placeholder="Select region",
+                         ),
 
-                dbc.Button('Predict', id='submit-val', className="btn-blue", n_clicks=0),
-                dbc.Button('reset', id='reset', className="btn-grey", n_clicks=0),
+            dbc.Button('Predict', id='submit-val', className="btn-blue", n_clicks=0),
+            dbc.Button('reset', id='reset', className="btn-grey", n_clicks=0),
 
-                html.Div(id='container-button-basic',
-                         children='Enter a value and press submit'),
-            ],
+            html.Div(id='container-button-basic',
+                     children='Enter a value and press submit'),
+        ],
 
         ),
     ]),
@@ -481,9 +479,7 @@ app.layout = html.Div([
 @app.callback(
     Output('histogram', 'figure'),
     Input('map', 'selectedData'))
-
 def hist_selected_data(selectedData):
-
     if selectedData:
 
         filtList = []
@@ -492,14 +488,12 @@ def hist_selected_data(selectedData):
 
         filter_df = df[df['Name'].isin(filtList)][['Name', 'Eur/m²']]
 
-    else: filter_df = df
-
+    else:
+        filter_df = df
 
     hist = px.histogram(filter_df, x="Eur/m²",
                         title='Distribution of price per m²',
-                        labels={'total_bill': 'total bill'},  # can specify one label per df column
                         opacity=0.8, width=350, height=490,
-                        # represent bars with log scale
                         color_discrete_sequence=['indianred']  # color of histogram bars
                         )
 
@@ -511,7 +505,8 @@ def hist_selected_data(selectedData):
 
     return hist
 
-# prediction
+
+# prediction model
 @app.callback(
     Output('container-button-basic', 'children'),
     [Input('submit-val', 'n_clicks'),
@@ -522,6 +517,7 @@ def hist_selected_data(selectedData):
      Input("region-dd", "value"),
 
      ])
+
 def update_output(n_clicks, sqft, rooms, devs, wohntyp, region):
     if n_clicks > 0:
 
@@ -547,7 +543,7 @@ def update_output(n_clicks, sqft, rooms, devs, wohntyp, region):
     else:
         return 'Enter details of your real estate project'
 
-
+# prediction reset
 @app.callback(
 
     [Output('submit-val', 'n_clicks'),
@@ -561,17 +557,15 @@ def update_output(n_clicks, sqft, rooms, devs, wohntyp, region):
 
 )
 def reset_input(n_click):
+    return 0, "", "", "", "", ""
 
-        return 0, "", "", "", "", ""
 
-
+#display link in details section
 @app.callback(
     Output('link', 'children'),
     Output('link', 'href'),
     [Input('map', 'clickData')])
-
 def display_click_data(clickData):
-
     if clickData:
 
         target = clickData['points'][0]['customdata'][0]
@@ -592,7 +586,6 @@ def display_click_data(clickData):
      Input('predict-range', 'value'),
      Input('category-filter', 'value'),
      ])
-
 
 def update_figure(selected_year, price, rel_price, size, diff, cat):
     filtered_df = df[:]
@@ -617,7 +610,6 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
     else:
         filtered_df = filtered_df
 
-
     # filter prices
     if (price == '250k'):
         filtered_df = filtered_df[filtered_df['price'] <= 250000]
@@ -629,10 +621,10 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
         filtered_df = filtered_df[(filtered_df['price'] > 500000) & (filtered_df['price'] <= 1000000)]
 
     if (price == '1.5mio'):
-        filtered_df = filtered_df[(filtered_df['price'] > 1000000) & (filtered_df['price'] <= 1500000)]    
+        filtered_df = filtered_df[(filtered_df['price'] > 1000000) & (filtered_df['price'] <= 1500000)]
 
     if (price == '2mio'):
-        filtered_df = filtered_df[(filtered_df['price'] > 1500000) & (filtered_df['price'] <= 2000000)]    
+        filtered_df = filtered_df[(filtered_df['price'] > 1500000) & (filtered_df['price'] <= 2000000)]
 
     if (price == '>2mio'):
         filtered_df = filtered_df[filtered_df['price'] > 2000000]
@@ -669,30 +661,32 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
     else:
         filtered_df = filtered_df
 
-
-#filter price prediction
-    if (diff =='<(20)'):
+    # filter price prediction
+    if (diff == '<(20)'):
         filtered_df = filtered_df[(filtered_df['diff_from_prediction'] < -0.2)]
 
-    if (diff =='(20)'):
-        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] < -0.1) & (filtered_df['diff_from_prediction'] >= -0.2)]
+    if (diff == '(20)'):
+        filtered_df = filtered_df[
+            (filtered_df['diff_from_prediction'] < -0.1) & (filtered_df['diff_from_prediction'] >= -0.2)]
 
-    if (diff =='(10)'):
-        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] < 0) & (filtered_df['diff_from_prediction'] >= -0.1)]
+    if (diff == '(10)'):
+        filtered_df = filtered_df[
+            (filtered_df['diff_from_prediction'] < 0) & (filtered_df['diff_from_prediction'] >= -0.1)]
 
-    if (diff =='10'):
-        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] > 0) & (filtered_df['diff_from_prediction'] <= 0.1)]
-    
-    if (diff =='20'):
-        filtered_df = filtered_df[(filtered_df['diff_from_prediction'] > 0.1) & (filtered_df['diff_from_prediction'] <= 0.2)]
+    if (diff == '10'):
+        filtered_df = filtered_df[
+            (filtered_df['diff_from_prediction'] > 0) & (filtered_df['diff_from_prediction'] <= 0.1)]
 
-    if (diff =='>20'):
+    if (diff == '20'):
+        filtered_df = filtered_df[
+            (filtered_df['diff_from_prediction'] > 0.1) & (filtered_df['diff_from_prediction'] <= 0.2)]
+
+    if (diff == '>20'):
         filtered_df = filtered_df[(filtered_df['diff_from_prediction'] > 0.2)]
 
 
-    else: filtered_df=filtered_df
-
-
+    else:
+        filtered_df = filtered_df
 
     # filter building category
 
@@ -701,18 +695,18 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
     else:
         filtered_df = filtered_df
 
-    filtered_df = filtered_df.append({'Price': "",'scale':0, 'longitude': 9.21, 'latitude' :51.13, 'Name': "This is the center of germany",
-                                      'Predicted price':"", 'Living space':"", 'Status':"", 'Wohntyp': ""}, ignore_index=True)
-
+    filtered_df = filtered_df.append(
+        {'Price': "", 'scale': 0, 'longitude': 9.21, 'latitude': 51.13, 'Name': "This is the center of germany",
+         'Predicted price': "", 'Living space': "", 'Status': "", 'Wohntyp': ""}, ignore_index=True)
 
     fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", color='Eur/m²', hover_name="Name",
-                            size=filtered_df['scale'],size_max=13,
+                            size=filtered_df['scale'], size_max=13,
                             hover_data={"url": False, "price": False, "Wohntyp": True,
-                                                    "latitude": False, "longitude": False, "scale": False,
-                                                    "Price": True,  "price-pred": False,
-                                                    "Predicted price": True, "sqft": False, "Living space":True,
-                                                    "Eur/m²": True, "Status":True
-                                                     },
+                                        "latitude": False, "longitude": False, "scale": False,
+                                        "Price": True, "price-pred": False,
+                                        "Predicted price": True, "sqft": False, "Living space": True,
+                                        "Eur/m²": True, "Status": True
+                                        },
                             color_continuous_scale=px.colors.diverging.Portland, zoom=4, mapbox_style='carto-positron',
                             opacity=1)
 
@@ -724,4 +718,4 @@ def update_figure(selected_year, price, rel_price, size, diff, cat):
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-    
+
